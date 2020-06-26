@@ -19,5 +19,13 @@ public static class Tags
     //Layers
     public static string LAYER_GROUND = "Ground";
     public static string LAYER_CLIMB = "Climbable";
+    public static string LAYER_INTERACTABLES = "Interactables";
+    public static string LAYER_PLAYER = "Player";
+
+    //Tags
+    public static string TAG_ENEMY = "Enemy";
+
+    //Scenes
+    public static string SCENE_MAIN_MENU = "StartMenu";
 }
 

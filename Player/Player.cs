@@ -6,12 +6,14 @@ public class Player : MonoBehaviour
 {
     [SerializeField] private float walkSpeed = 3f;
     [SerializeField] private float jumpVelocity = 5f;
+    [SerializeField] private float timeToDie = 2f;
 
     private Rigidbody2D myBody;
     private Animator anim;
     private Collider2D colider;
 
     private float gravityScale;
+    private bool isAlive = true;
 
     private void Awake()
     {
@@ -37,10 +39,24 @@ public class Player : MonoBehaviour
 
     void Update()
     {
-        Movement();
-        FlipCharacter();
-        Jump();
-        Climb();
+        if (!isAlive)
+        {
+            PlayerIsDying();
+        }
+        else
+        {
+            Movement();
+            FlipCharacter();
+            Jump();
+            Climb();
+        }
+    }
+
+    private void PlayerIsDying()
+    {
+        anim.SetBool(Tags.ANIM_IS_DYING, true);
+        Destroy(gameObject, timeToDie);
+        FindObjectOfType<GameSessionsManager>().PlayerJustDied();
     }
 
     private void Movement()
@@ -103,5 +119,13 @@ public class Player : MonoBehaviour
            transform.localScale = new Vector2(Mathf.Sign(myBody.velocity.x),1);
         }
        
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if(other.tag == Tags.TAG_ENEMY)
+        {
+            isAlive = false;
+        }
     }
 }
